@@ -7,9 +7,11 @@ const auth = require("./middleware/auth");
 const mysql = require("mysql");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv").config();
+const cors = require("cors");
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -25,9 +27,6 @@ const con = mysql.createConnection({
 con.connect();
 
 const saltRounds = 10;
-const pw = "s0//P4$$w0rD";
-const pw2 = "nottherightpassword";
-const hash1 = "$2b$10$UzNXWANMWTvLgYDQpNiOwu8sk19ruqbXFYFth.1qrdfCSDzmSsoEC";
 
 //Allow static access to the front-end
 app.use(express.static(`${__dirname}/front-end/build`));
@@ -38,12 +37,10 @@ app.get("/", function (req, res) {
 });
 
 app.get("/api/profile", auth.authenticateToken, function (req, res) {
-	const { email, password } = req.body;
-
 	res.status(200).send("Welcome to the club!");
 });
 
-app.post("/api/register", (req, res) => {
+app.post("/api/register", auth.deauthenitcateToken, (req, res) => {
 	console.log("/api/register");
 	console.log("username: " + req.body.username);
 	console.log("password: " + req.body.password);
@@ -57,8 +54,8 @@ app.post("/api/register", (req, res) => {
 			"INSERT INTO Users (username, password) VALUES (?, ?)",
 			[req.body.username, hash],
 			function (err, result) {
-				if (err) res.send(err.message);
-				res.json(result);
+				if (err) res.json({ success: false });
+				res.json({ success: true });
 			}
 		);
 	});
@@ -82,22 +79,14 @@ app.post("/api/login", (req, res) => {
 							{ username: req.body.username },
 							process.env.TOKEN_SECRET
 						);
-						res.send(token);
+						res.json({ token: token, status: "good" });
 					} else {
-						res.send("bad");
+						res.send({ status: "bad" });
 					}
 				}
 			);
 		}
 	);
-
-	/*
-	const token = auth.generateAccessToken(
-		{ username: req.body.username },
-		process.env.TOKEN_SECRET
-	);
-	res.json(token);
-	*/
 });
 
 app.listen(process.env.PORT || 8080);
