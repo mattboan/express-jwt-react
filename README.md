@@ -1,6 +1,8 @@
 # express-jwt-react
 
-This project is to expore the fundamentals of JWT (JSON Web Tokens)
+This project is to expore the fundamentals of JWT (JSON Web Tokens). Here is a screen shot:
+
+<img src="./img/screenshot.png" />
 
 ## Dependencies
 

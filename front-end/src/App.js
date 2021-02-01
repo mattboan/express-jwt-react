@@ -6,6 +6,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 
 import Header from "./comps/Header";
+import Footer from "./comps/Footer";
 import Register from "./views/Register";
 import Login from "./views/Login";
 import Profile from "./views/Profile";
@@ -31,6 +32,7 @@ class App extends React.Component {
 					/>
 					<PrivateRoute component={Profile} path="/Profile" exact />
 				</Switch>
+				<Footer />
 			</div>
 		);
 	}
