@@ -7,6 +7,7 @@ import PublicRoute from "./routes/PublicRoute";
 
 import Header from "./comps/Header";
 import Footer from "./comps/Footer";
+import Home from "./views/Home";
 import Register from "./views/Register";
 import Login from "./views/Login";
 import Profile from "./views/Profile";
@@ -18,6 +19,12 @@ class App extends React.Component {
 				<Header />
 
 				<Switch>
+					<PublicRoute
+						restricted={false}
+						component={Home}
+						path="/"
+						exact
+					/>
 					<PublicRoute
 						restricted={false}
 						component={Register}
