@@ -4,7 +4,7 @@ This project is to expore the fundamentals of JWT (JSON Web Tokens)
 
 ## Dependencies
 
-To get install all of the dependencies enter this in the terminal within the root of this projects directory:
+Install all of the dependencies enter this in the terminal within the root of this projects directory:
 
 ```
 npm install
