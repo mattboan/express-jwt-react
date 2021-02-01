@@ -11,11 +11,11 @@ function authenticateToken(req, res, next) {
 
 	console.log("Token: " + token);
 
-	jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+	jwt.verify(token, process.env.TOKEN_SECRET, (err, userID) => {
 		console.log(err);
 		if (err) return res.sendStatus(403);
-		req.user = user;
-		console.log("User: " + JSON.stringify(user));
+		req.userID = userID;
+		console.log("userID: " + JSON.stringify(userID));
 		return next(); // pass the execution off to whatever request the client intended
 	});
 }
@@ -29,17 +29,17 @@ function deauthenitcateToken(req, res, next) {
 	}
 
 	console.log("Token: " + token);
-	jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+	jwt.verify(token, process.env.TOKEN_SECRET, (err, userID) => {
 		console.log(err);
 		if (err) return res.sendStatus(403);
-		req.user = user;
+		req.userID = userID;
 
 		return res.sendStatus(403);
 	});
 }
 
-function generateAccessToken(username, secret) {
-	return jwt.sign(username, secret, { expiresIn: "60s" });
+function generateAccessToken(userID, secret) {
+	return jwt.sign(userID, secret, { expiresIn: "60s" });
 }
 
 const auth = {

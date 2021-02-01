@@ -37,7 +37,18 @@ app.get("/", function (req, res) {
 });
 
 app.get("/api/profile", auth.authenticateToken, function (req, res) {
-	res.status(200).send("Welcome to the club!");
+	con.query(
+		"SELECT username, role FROM Users WHERE id = ?",
+		[req.userID.userID],
+		function (err, result) {
+			if (err) res.json({ success: false });
+			res.json({
+				id: req.userID.userID,
+				username: result[0].username,
+				role: result[0].role,
+			});
+		}
+	);
 });
 
 app.post("/api/register", auth.deauthenitcateToken, (req, res) => {
@@ -66,7 +77,7 @@ app.post("/api/login", (req, res) => {
 	console.log("createNewUser: " + JSON.stringify(req.body));
 
 	con.query(
-		"SELECT password FROM Users WHERE username = ?",
+		"SELECT password, id FROM Users WHERE username = ?",
 		[req.body.username],
 		function (err, result) {
 			bcrypt.compare(
@@ -76,7 +87,7 @@ app.post("/api/login", (req, res) => {
 					if (authed) {
 						//If authenticated send back the jwt token
 						const token = auth.generateAccessToken(
-							{ username: req.body.username },
+							{ userID: result[0].id },
 							process.env.TOKEN_SECRET
 						);
 						res.json({ token: token, status: "good" });

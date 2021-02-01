@@ -1,8 +1,9 @@
 import React from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
+import { login, logout } from "../utils";
 
-import "./Styles/Register.css";
+import "./styles/Register.css";
 
 const url = "http://localhost:8080/api/login";
 
@@ -11,10 +12,8 @@ class Register extends React.Component {
 		super(props);
 
 		this.state = {
-			token: Cookies.get("token"),
 			username: "",
 			password: "",
-			res: "",
 		};
 	}
 
@@ -26,7 +25,9 @@ class Register extends React.Component {
 		this.setState({ password: event.target.value });
 	};
 
-	postForm = () => {
+	postForm = (e) => {
+		e.preventDefault();
+		logout(); //imported function: utils/index.js/logout()
 		const params = new URLSearchParams();
 		params.append("username", this.state.username);
 		params.append("password", this.state.password);
@@ -34,7 +35,6 @@ class Register extends React.Component {
 		const config = {
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
-				Authorization: `Bearer ${this.state.token}`,
 			},
 		};
 
@@ -42,8 +42,10 @@ class Register extends React.Component {
 			.post(url, params, config)
 			.then((result) => {
 				console.log(result);
-				this.setState({ res: "Status: " + result.data.status });
-				Cookies.set("token", result.data.token);
+
+				login(result.data.token); //imported function: utils/index.js/login()
+
+				this.props.history.push("/Profile");
 			})
 			.catch((err) => {
 				console.log(err);
@@ -52,7 +54,7 @@ class Register extends React.Component {
 
 	render() {
 		return (
-			<div className="Register">
+			<form className="Register" onSubmit={this.postForm}>
 				<h3>Login</h3>
 				<label>Username</label>
 				<input
@@ -66,9 +68,11 @@ class Register extends React.Component {
 					value={this.state.password}
 					onChange={this.handlePasswordChange}
 				/>
-				<button onClick={this.postForm}>Login</button>
-				<p>{this.state.res}</p>
-			</div>
+				<button type="submit">Login</button>
+				<p>
+					Need an account? Register <Link to="/Register">Here</Link>
+				</p>
+			</form>
 		);
 	}
 }

@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { getToken, isLogin } from "../utils";
 
-//import "./Styles/Profile.css";
+import "./styles/Profile.css";
 
 const url = "http://localhost:8080/api/profile";
 
@@ -11,8 +11,10 @@ class Profile extends React.Component {
 		super(props);
 
 		this.state = {
-			token: Cookies.get("token"),
-			message: "",
+			username: "",
+			role: "",
+			id: "",
+			error: "",
 		};
 	}
 
@@ -21,27 +23,39 @@ class Profile extends React.Component {
 	}
 
 	getForm = () => {
+		let authHead = null;
+		if (isLogin()) {
+			authHead = `Bearer ${getToken()}`;
+		}
+
 		const config = {
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded",
-				Authorization: `Bearer ${this.state.token}`,
+				Authorization: authHead,
 			},
 		};
 
 		axios
 			.get(url, config)
 			.then((result) => {
-				this.setState({ message: result.data });
+				this.setState({
+					username: result.data.username,
+					role: result.data.role,
+					id: result.data.id,
+				});
 			})
 			.catch((err) => {
 				console.log(err);
+				this.setState({ error: err.message });
 			});
 	};
 
 	render() {
 		return (
 			<div className="Profile">
-				<p>{this.state.message}</p>
+				<p>ID: {this.state.id}</p>
+				<p>Username: {this.state.username}</p>
+				<p>Role: {this.state.role}</p>
 			</div>
 		);
 	}

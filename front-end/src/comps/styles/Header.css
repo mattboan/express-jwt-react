@@ -1,0 +1,13 @@
+.Header {
+	color: white;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 10px;
+}
+
+.Header h3 {
+	font-size: 16pt;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
