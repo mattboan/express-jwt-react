@@ -1,6 +1,8 @@
 # express-jwt-react
 
-This project is to expore the fundamentals of JWT (JSON Web Tokens). Here is a screen shot:
+This project was aimed at understanding how to create a secure React JS SPA web app that allows for dynamaic routing based on current authentication/authorization status verified by an Express JS API using JWT tokens.
+
+Here is a screen shot of the React JS SPA web app login screen:
 
 <img src="./img/screenshot.png" />
 
