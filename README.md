@@ -28,7 +28,7 @@ Next it is imperative to create the dotenv variables for the back end in the roo
 touch .env
 ```
 
-This will create a a file then you will need to setup the projects environment variables:
+This will create a file to store the projects environment variables open the file and enter:
 
 ```
 TOKEN_SECRET=<a secret key for signing the JWT>
