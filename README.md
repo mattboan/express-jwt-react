@@ -10,6 +10,34 @@ To get install all of the dependencies enter this in the terminal within the roo
 npm install
 ```
 
+The next step is to setup the MySQL database. To do this open up the mysql CLI on your system.
+
+```
+mysql -u <MySQL username> -p
+```
+
+Next enter in this command in the MySQL CLI:
+
+```
+source ./MySQL/setup.sql
+```
+
+Next it is imperative to create the dotenv variables for the back end in the root of this projects directory:
+
+```
+touch .env
+```
+
+This will create a a file then you will need to setup the projects environment variables:
+
+```
+TOKEN_SECRET=<a secret key for signing the JWT>
+DB_HOST=localhost
+DB_USER=<database username>
+DB_PASS=<database usernames password>
+DB_DB=express_jwt_react_dev_db
+```
+
 ## Executing
 
 There are two parts to this application that need to be started seperately when in "developer mode"; the front and back end.
