@@ -13,6 +13,11 @@ Install all of the dependencies enter this in the terminal within the root of th
 ```
 npm install
 ```
+To install all of the dependencies for the front end, enter this in the terminal within the root of this projects directory:
+
+```
+cd front-end && npm install
+```
 
 The next step is to setup the MySQL database. To do this open up the mysql CLI on your system.
 
